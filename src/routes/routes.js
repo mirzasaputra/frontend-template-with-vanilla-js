@@ -1,21 +1,19 @@
-const Navigation = '/src/views/index.html';
-const ReserveWordPage = '/src/views/reserve-word/index.html';
-const GradeScorePage = '/src/views/grade-score/index.html';
+const LoginPage = '/src/views/login/index.html'
+const ErrorPage = '/src/views/errors/404.html'
 
 export const routes = [
     {
         path: '/',
         meta: {
-            title: 'Program Membalikan Kata'
+            title: 'Login'
         },
-        component: Navigation,
-        view: ReserveWordPage
+        view: LoginPage
     },
     {
-        path: '/grade-score',
+        path: '404',
         meta: {
-            title: 'Program Menghitung Nilai'
+            title: '404 Not Found',
         },
-        view: GradeScorePage
-    },
+        view: ErrorPage
+    }
 ];

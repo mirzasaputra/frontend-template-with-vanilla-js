@@ -25,8 +25,16 @@ export const Router = () => {
         });
 
         let match = potentialMatches.find((potentialMatch) => potentialMatch.result !== null);
+        
+        if(typeof match == 'undefined') {
+            match = potentialMatches.find((potentialMatch) => potentialMatch.route.path == '404')
+        } else {
+            $router.params = getParams(match)
+        }
 
-        $router.params = getParams(match)
+
+        console.log(match)
+        $router.push = pushState
         await handleView(match.route)
     };
 
@@ -36,9 +44,12 @@ export const Router = () => {
     };
 
     const handleView = async (route) => {
-        document.title = route.meta.title;
+        document.title = route.meta.title + ' | Siakad Politeknik Negeri Banyuwangi';
 
+        Pace.restart()
         await checkRouteView(route)
+
+        Pace.restart()
         const res = await fetch($baseUrl + route.view).then(res => res.text())
         
         if($('router-view').length > 0) {
@@ -66,7 +77,16 @@ export const Router = () => {
         }
     }
 
-    window.addEventListener("popstate", Router);
+    window.addEventListener("popstate", () => {
+        document.body.addEventListener("click", (e) => {
+            if (e.target.localName == "router-link") {
+                e.preventDefault();
+                pushState(e.target.getAttribute("link"));
+            }
+        });
+
+        Router();
+    });
 
     document.addEventListener("DOMContentLoaded", () => {
         document.body.addEventListener("click", (e) => {
